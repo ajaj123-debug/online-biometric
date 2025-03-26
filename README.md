@@ -14,7 +14,7 @@ This project is a Biometric Attendance System built using Django. It allows stud
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/biometric-attendance-system.git
+    git clone https://github.com/ajaj123-debug/online-biometric.git
     cd biometric-attendance-system
     ```
 
