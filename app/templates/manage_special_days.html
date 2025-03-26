@@ -1,0 +1,361 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Special Working Days{% endblock %}
+
+{% block additional_styles %}
+    .special-days-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .special-days-container h1 {
+        margin-bottom: 2.5rem;
+        font-size: 2rem;
+        color: var(--text-primary);
+    }
+
+    .form-card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 2px 4px var(--shadow-color);
+    }
+
+    .form-card h2 {
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.875rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+        font-size: 1rem;
+    }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 2rem 0;
+    }
+
+    .btn-primary {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .special-days-list {
+        margin-top: 4rem;
+    }
+
+    .special-day-card {
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .special-day-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px var(--shadow-color);
+    }
+
+    .special-day-info {
+        flex: 1;
+        min-width: 250px;
+        padding-right: 1rem;
+    }
+
+    .special-day-date {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .special-day-desc {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    .special-day-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .special-day-status {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .status-active {
+        background: #e6f4ea;
+        color: #1e8e3e;
+    }
+
+    .status-inactive {
+        background: #fce8e6;
+        color: #d93025;
+    }
+
+    .btn-delete {
+        background: transparent;
+        color: #d93025;
+        border: 1px solid #d93025;
+        padding: 0.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        height: 36px;
+        width: 36px;
+        line-height: 1;
+        min-width: 36px;
+    }
+
+    .btn-delete:hover {
+        background: #fce8e6;
+        transform: scale(1.05);
+    }
+
+    .btn-edit {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        min-width: 70px;
+    }
+
+    .btn-edit:hover {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+
+    .upcoming-days {
+        margin: 3rem 0 4rem 0;
+        padding: 2rem;
+        background: var(--card-bg);
+        border-radius: 12px;
+        border: 2px solid var(--accent-color);
+    }
+
+    .section-title {
+        margin-bottom: 2rem;
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    /* Messages styling */
+    .messages {
+        margin-bottom: 2rem;
+    }
+
+    .message {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+
+    .message.success {
+        background: #e6f4ea;
+        color: #1e8e3e;
+        border: 1px solid #1e8e3e;
+    }
+
+    .message.error {
+        background: #fce8e6;
+        color: #d93025;
+        border: 1px solid #d93025;
+    }
+
+    @media (max-width: 576px) {
+        .special-day-card {
+            padding: 1rem;
+        }
+
+        .special-day-info {
+            padding-right: 0;
+            width: 100%;
+        }
+
+        .special-day-actions {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .special-day-status, .btn-edit, .btn-delete {
+            font-size: 0.9rem;
+        }
+    }
+{% endblock %}
+
+{% block content %}
+<div class="special-days-container">
+    <h1>Manage Special Working Days</h1>
+
+    {% if upcoming_special_days %}
+    <div class="upcoming-days">
+        <h2 class="section-title">Upcoming Special Days</h2>
+        {% for day in upcoming_special_days %}
+        <div class="special-day-card" data-date="{{ day.date|date:'Y-m-d' }}" 
+             data-follow-day="{{ day.follow_timetable_of }}"
+             data-description="{{ day.description }}"
+             data-active="{{ day.is_active|lower }}">
+            <div class="special-day-info">
+                <div class="special-day-date">{{ day.date|date:"l, F j, Y" }}</div>
+                <div class="special-day-desc">Following {{ day.get_follow_timetable_of_display }} timetable - {{ day.description }}</div>
+            </div>
+            <div class="special-day-actions">
+                <span class="special-day-status {% if day.is_active %}status-active{% else %}status-inactive{% endif %}">
+                    {% if day.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+                <button class="btn-edit" onclick="editSpecialDay(this.parentElement.parentElement)">
+                    Edit
+                </button>
+                <form method="POST" action="{% url 'delete_special_day' day.id %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this special working day?')">
+                        &times;
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="form-card">
+        <h2 id="form-title">Add Special Working Day</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="follow_day">Follow Timetable Of</label>
+                <select id="follow_day" name="follow_day" class="form-control" required>
+                    {% for value, day in weekdays %}
+                        <option value="{{ value }}">{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" class="form-control" 
+                       placeholder="e.g., Compensation for Monday holiday" required>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" id="is_active" name="is_active" checked>
+                <label for="is_active">Active</label>
+            </div>
+            <button type="submit" class="btn-primary">Save Special Working Day</button>
+        </form>
+    </div>
+
+    <div class="special-days-list">
+        <h2 class="section-title">All Special Working Days</h2>
+        {% for day in all_special_days %}
+        <div class="special-day-card">
+            <div class="special-day-info">
+                <div class="special-day-date">{{ day.date|date:"l, F j, Y" }}</div>
+                <div class="special-day-desc">Following {{ day.get_follow_timetable_of_display }} timetable - {{ day.description }}</div>
+            </div>
+            <div class="special-day-actions">
+                <span class="special-day-status {% if day.is_active %}status-active{% else %}status-inactive{% endif %}">
+                    {% if day.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+                <button class="btn-edit" onclick="editSpecialDay(this.parentElement.parentElement)">
+                    Edit
+                </button>
+                <form method="POST" action="{% url 'delete_special_day' day.id %}" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this special working day?')">
+                        &times;
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p>No special working days configured yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+function editSpecialDay(card) {
+    // Get data from the card
+    const date = card.dataset.date;
+    const followDay = card.dataset.followDay;
+    const description = card.dataset.description;
+    const isActive = card.dataset.active === 'true';
+
+    // Populate the form
+    document.getElementById('date').value = date;
+    document.getElementById('follow_day').value = followDay;
+    document.getElementById('description').value = description;
+    document.getElementById('is_active').checked = isActive;
+
+    // Change form title
+    document.getElementById('form-title').textContent = 'Edit Special Working Day';
+
+    // Scroll to form
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+{% endblock %}
+{% endblock %} 

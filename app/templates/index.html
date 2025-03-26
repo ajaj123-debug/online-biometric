@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+
+{% block title %}Biometric Attendance System{% endblock %}
+
+{% block additional_styles %}
+    .hero-section {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+        border-radius: 20px;
+        margin: 0 0 3rem 0;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="rgba(255,255,255,0.1)"/></svg>');
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .hero-section h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 2;
+        line-height: 1.2;
+    }
+
+    .hero-section p {
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+        padding: 0 1rem;
+        line-height: 1.6;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: clamp(1rem, 3vw, 2rem);
+        margin: 0 0 3rem 0;
+        padding: 0 1rem;
+    }
+
+    .feature-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: clamp(1.5rem, 3vw, 2rem);
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px var(--shadow-color);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px var(--shadow-color);
+    }
+
+    .feature-icon {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        margin-bottom: 1.5rem;
+        color: var(--accent-color);
+    }
+
+    .feature-card h3 {
+        color: var(--text-primary);
+        font-size: clamp(1.2rem, 2vw, 1.4rem);
+        margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 1.5vw, 1rem);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: clamp(0.5rem, 2vw, 1rem);
+        justify-content: center;
+        margin-top: 0;
+        position: relative;
+        z-index: 2;
+        flex-wrap: wrap;
+        padding: 0 1rem;
+    }
+
+    .action-btn {
+        padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        user-select: text;
+        font-size: clamp(0.9rem, 1.5vw, 1rem);
+        min-width: 200px;
+        justify-content: center;
+    }
+
+    .primary-btn {
+        background: white;
+        color: var(--accent-color);
+        border: none;
+    }
+
+    .primary-btn:hover {
+        background: var(--bg-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .secondary-btn {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+    }
+
+    .secondary-btn:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .stats-section {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: clamp(1.5rem, 3vw, 2rem);
+        margin: 0 1rem;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px var(--shadow-color);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: clamp(1rem, 3vw, 2rem);
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: clamp(0.5rem, 2vw, 1rem);
+    }
+
+    .stat-number {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 700;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 3rem 1rem;
+            margin: 0 1rem 2rem 1rem;
+            border-radius: 15px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .action-btn {
+            width: 100%;
+            min-width: unset;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+            padding: 0 1rem;
+        }
+
+        .feature-card {
+            margin-bottom: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="hero-section">
+        <h1>Welcome to Biometric Attendance</h1>
+        <p>Streamline your attendance management with our modern fingerprint-based system</p>
+        <div class="action-buttons">
+            <a href="/students/" class="action-btn primary-btn">
+                <i class="fas fa-users"></i> Manage Students
+            </a>
+            <a href="/attendance/" class="action-btn secondary-btn">
+                <i class="fas fa-chart-bar"></i> View Attendance
+            </a>
+            <a href="/student/login/" class="action-btn secondary-btn">
+                <i class="fas fa-book"></i> Subject-wise Attendance
+            </a>
+        </div>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">👆</div>
+            <h3>Fingerprint Authentication</h3>
+            <p>Secure and accurate attendance tracking using advanced fingerprint technology</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Real-time Records</h3>
+            <p>Instant access to attendance data with detailed reports and analytics</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Quick & Easy</h3>
+            <p>Simple enrollment process and hassle-free attendance marking</p>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">{{ total_students }}</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ today_attendance }}</div>
+                <div class="stat-label">Today's Attendance</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ enrolled_fingerprints }}</div>
+                <div class="stat-label">Enrolled Fingerprints</div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

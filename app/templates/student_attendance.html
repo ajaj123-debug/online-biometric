@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block title %}My Attendance{% endblock %}
+
+{% block additional_styles %}
+    .student-info {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px var(--shadow-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .student-name {
+        font-size: 1.5rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .student-roll {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .subject-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .subject-card {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px var(--shadow-color);
+    }
+
+    .subject-header {
+        margin-bottom: 1rem;
+    }
+
+    .subject-code {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.2rem;
+    }
+
+    .subject-name {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .attendance-stats {
+        display: grid;
+        gap: 0.8rem;
+    }
+
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+    }
+
+    .stat-value {
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .percentage-high {
+        color: #1e8e3e;
+    }
+
+    .percentage-medium {
+        color: #f29900;
+    }
+
+    .percentage-low {
+        color: #d93025;
+    }
+
+    .required-lectures {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .required-lectures strong {
+        color: var(--accent-color);
+    }
+
+    .attendance-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .attendance-section {
+        margin-top: 3rem;
+    }
+
+    .attendance-section h2 {
+        font-size: 1.3rem;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+
+    .attendance-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: var(--card-bg);
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        box-shadow: 0 2px 4px var(--shadow-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .punch-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .punch-subject {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .punch-type {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .punch-in {
+        background: #e6f4ea;
+        color: #1e8e3e;
+    }
+
+    .punch-out {
+        background: #fce8e6;
+        color: #d93025;
+    }
+
+    .logout-btn {
+        background: #fce8e6;
+        color: #d93025;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .logout-btn:hover {
+        background: #fad2cf;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .subject-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .attendance-item {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+    }
+{% endblock %}
+
+{% block header_title %}My Attendance{% endblock %}
+
+{% block nav_links %}
+    <a href="/">Home</a>
+    <a href="/student/login/">← Login</a>
+{% endblock %}
+
+{% block content %}
+    <button class="logout-btn" onclick="location.href='/student/logout/'">
+        <span>↪</span> Logout
+    </button>
+
+    <div class="student-info">
+        <h1 class="student-name">{{ student.name }}</h1>
+        <span class="student-roll">Roll No: {{ student.roll_number }}</span>
+    </div>
+
+    <div class="subject-grid">
+        {% for subject in subject_attendance %}
+            <div class="subject-card">
+                <div class="subject-header">
+                    <div class="subject-code">{{ subject.code }}</div>
+                    <div class="subject-name">{{ subject.name }}</div>
+                </div>
+                <div class="attendance-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Total Lectures</span>
+                        <span class="stat-value">{{ subject.total_lectures }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Attended</span>
+                        <span class="stat-value">{{ subject.attended_lectures }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Percentage</span>
+                        <span class="stat-value {% if subject.percentage >= 90 %}percentage-high{% elif subject.percentage >= 75 %}percentage-medium{% else %}percentage-low{% endif %}">
+                            {{ subject.percentage }}%
+                        </span>
+                    </div>
+                </div>
+                {% if subject.lectures_needed > 0 %}
+                    <div class="required-lectures">
+                        Need to attend <strong>{{ subject.lectures_needed }}</strong> more lectures to achieve 90% attendance
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="attendance-section">
+        <h2>Recent Attendance</h2>
+        <ul class="attendance-list">
+            {% for record in attendance_records %}
+                <li class="attendance-item">
+                    <div class="punch-info">
+                        <div>{{ record.punch_time|date:"F j, Y" }} at {{ record.punch_time|time:"H:i:s" }}</div>
+                        {% if record.subject %}
+                            <div class="punch-subject">{{ record.subject.code }} - {{ record.subject.name }}</div>
+                        {% endif %}
+                    </div>
+                    <span class="punch-type {% if record.punch_type == 'IN' %}punch-in{% else %}punch-out{% endif %}">
+                        {{ record.punch_type }}
+                    </span>
+                </li>
+            {% empty %}
+                <li class="attendance-item">
+                    <div>No attendance records found</div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %} 

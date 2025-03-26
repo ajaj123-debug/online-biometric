@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Attendance Records{% endblock %}
+
+{% block additional_styles %}
+    .refresh-btn {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .refresh-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+    }
+
+    .date-section {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 4px var(--shadow-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .date-header {
+        color: var(--text-primary);
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .attendance-list {
+        list-style: none;
+    }
+
+    .attendance-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 8px;
+        background: var(--bg-secondary);
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .attendance-item:hover {
+        background: var(--bg-hover);
+        transform: translateX(4px);
+    }
+
+    .student-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .student-name {
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .punch-time {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .punch-type {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+
+    .punch-in {
+        background: #e6f4ea;
+        color: #1e8e3e;
+    }
+
+    .punch-out {
+        background: #fce8e6;
+        color: #d93025;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 2px 4px var(--shadow-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .empty-state h2 {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .attendance-item {
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .student-info {
+            flex-direction: column;
+        }
+    }
+{% endblock %}
+
+{% block header_title %}Attendance Records{% endblock %}
+
+{% block nav_links %}
+    <a href="/">← Home</a>
+    <a href="/students/">Student List</a>
+{% endblock %}
+
+{% block content %}
+    <button class="refresh-btn" onclick="location.reload()">
+        <span>↻</span> Refresh Records
+    </button>
+
+    {% if attendance_by_date %}
+        {% for date, records in attendance_by_date.items %}
+            <div class="date-section">
+                <h2 class="date-header">{{ date|date:"F j, Y" }}</h2>
+                <ul class="attendance-list">
+                    {% for record in records %}
+                        <li class="attendance-item">
+                            <div class="student-info">
+                                <span class="student-name">{{ record.student.name }}</span>
+                                <span class="punch-time">{{ record.punch_time|time:"H:i:s" }}</span>
+                            </div>
+                            <span class="punch-type {% if record.punch_type == 'IN' %}punch-in{% else %}punch-out{% endif %}">
+                                {{ record.punch_type }}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <h2>No Attendance Records</h2>
+            <p>No attendance records found for the last 7 days</p>
+        </div>
+    {% endif %}
+{% endblock %} 
